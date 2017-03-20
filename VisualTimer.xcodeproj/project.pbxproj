@@ -58,11 +58,11 @@
 			children = (
 				929C766E1E8044CC0045512D /* AppDelegate.swift */,
 				929C76701E8044CC0045512D /* ViewController.swift */,
+				929C76801E8045020045512D /* VisualTimer.swift */,
 				929C76721E8044CC0045512D /* Main.storyboard */,
 				929C76751E8044CC0045512D /* Assets.xcassets */,
 				929C76771E8044CC0045512D /* LaunchScreen.storyboard */,
 				929C767A1E8044CC0045512D /* Info.plist */,
-				929C76801E8045020045512D /* VisualTimer.swift */,
 			);
 			path = VisualTimer;
 			sourceTree = "<group>";
