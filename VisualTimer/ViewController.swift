@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        visualTimer.backgroundColor = UIColor.red
+//        visualTimer.backgroundColor = UIColor.red
         view.addSubview(visualTimer)
     }
     

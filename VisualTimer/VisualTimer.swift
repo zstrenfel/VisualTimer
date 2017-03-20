@@ -11,7 +11,11 @@ import QuartzCore
 
 class VisualTimer: UIView {
     
-//    var frame: CGRect 
+    override var frame: CGRect {
+        didSet{
+            updateLayerFrames()
+        }
+    }
 //    weak var delegate: VisualTimerDelegate? = nil
     var currLocation: CGPoint = CGPoint()
     
@@ -23,14 +27,15 @@ class VisualTimer: UIView {
     var cooldown: Double = 0.0
     
     //Visual Design Variables
-    var trackWeight: Double = 1.0
-    var trackColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0) as! CGColor
-    var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0) as! CGColor
+    var inset: CGFloat = 8.0
+    var trackWidth: Double = 10.0
+    var trackColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0).cgColor
+    var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
     var timerRadius: Double = 100.0
     var timerSpeed: Double = 0.5
     
     //CoreGraphics Layers
-    let trackLayer = CALayer()
+    let trackLayer = CAShapeLayer()
     let indicatorLayer = CALayer()
     var indicatorLayerRadius: CGFloat = 10.0
     let intervalLayers: [CALayer] = []
@@ -45,18 +50,41 @@ class VisualTimer: UIView {
         indicatorLayer.backgroundColor = indicatorColor
         layer.addSublayer(indicatorLayer)
         
-        for interval in intervalLayers {
+        for _ in intervalLayers {
             //crete interval layers here
         }
+        
+        updateLayerFrames()
     }
     
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
-    */
+    
+    func updateLayerFrames() {
+        drawTrack()
+    }
+    
+    func drawTrack() {
+        let halfSize: CGFloat = min(bounds.size.width/2 - inset, bounds.size.height/2 -  inset)
+        let circleTrack = UIBezierPath(
+            arcCenter: CGPoint(x: bounds.size.width/2, y: bounds.size.height/2),
+            radius: CGFloat(halfSize - CGFloat(trackWidth / 2)),
+            startAngle: CGFloat(0),
+            endAngle: CGFloat(M_PI * 2),
+            clockwise: true)
+        
+        trackLayer.path = circleTrack.cgPath
+        trackLayer.fillColor = UIColor.clear.cgColor
+        trackLayer.strokeColor = trackColor
+        trackLayer.lineWidth = CGFloat(trackWidth)
+        
+        trackLayer.setNeedsDisplay()
+    }
+    
+    func positionForValue(value: Double) {
+        
+    }
+    
 
 }
