@@ -22,7 +22,7 @@ class VisualTimer: UIView {
     
     //Time Variables
     var time: Double = 10.0
-    var currTime: Double = 5.0 {
+    var currTime: Double = 0.0 {
         didSet {
             updateLayerFrames()
         }
@@ -37,7 +37,7 @@ class VisualTimer: UIView {
     //Visual Design Variables
     var inset: Double = 8.0
     var trackWidth: Double = 10.0
-    var trackColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0).cgColor
+    var trackColor: CGColor = UIColor.black.cgColor
     var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
     var timerRadius: Double = 100.0
     var timerSpeed: Double = 0.5
@@ -153,5 +153,7 @@ class VisualTimer: UIView {
     func valueToRadians(_ value: Double) -> Double {
         return (2 * M_PI) * (value / time)
     }
+    
+    
 
 }

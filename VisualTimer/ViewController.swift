@@ -17,9 +17,24 @@ struct ExampleTimer {
 
 class ViewController: UIViewController {
     
+    var timer: Timer? = nil
+    
+    @IBAction func startTimer(_ sender: UIButton) {
+        if timer == nil {
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+        } else {
+            timer?.invalidate()
+            timer = nil
+            self.visualTimer?.currTime = 0.0
+        }
+    }
+    
+    func update() {
+        self.visualTimer?.currTime += 1
+    }
+    
     let exampleTimer: ExampleTimer = ExampleTimer(countdown: 5.0, cooldown: 5.0, primary: 10.0, interval: 0.0)
-    var
-    visualTimer: VisualTimer? = nil
+    var visualTimer: VisualTimer? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()

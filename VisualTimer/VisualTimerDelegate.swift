@@ -9,5 +9,5 @@
 import Foundation
 
 protocol VisualTimerDelegate: class {
-    
+    func updateVisualTimer()
 }
