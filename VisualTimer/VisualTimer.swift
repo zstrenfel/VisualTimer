@@ -62,36 +62,36 @@ class VisualTimer: UIView {
     }
     
     func updateLayerFrames() {
-        drawTrack()
+//        drawTrack()
     }
     
-    func drawTrack() {
-        let halfSize: CGFloat = min(bounds.size.width/2 - inset, bounds.size.height/2 -  inset)
+    func drawTrack(startAngle: CGFloat, endAngle: CGFloat, color: CGColor, layer: CAShapeLayer) {
+        let radius: CGFloat = min(bounds.size.width/2 - inset, bounds.size.height/2 -  inset)
         let circleTrack = UIBezierPath(
-            arcCenter: CGPoint(x: bounds.size.width/2, y: bounds.size.height/2),
-            radius: CGFloat(halfSize - CGFloat(trackWidth / 2)),
-            startAngle: CGFloat(0),
-            endAngle: CGFloat(M_PI * 2),
+            arcCenter: CGPoint(x: radius, y: radius),
+            radius: CGFloat(radius - CGFloat(trackWidth / 2)),
+            startAngle: startAngle,
+            endAngle: endAngle,
             clockwise: true)
         
-        trackLayer.path = circleTrack.cgPath
-        trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.strokeColor = trackColor
-        trackLayer.lineWidth = CGFloat(trackWidth)
-        trackLayer.strokeEnd = 0.0
+        layer.path = circleTrack.cgPath
+        layer.fillColor = UIColor.clear.cgColor
+        layer.strokeColor = color
+        layer.lineWidth = CGFloat(trackWidth)
+        layer.strokeEnd = 0.0
         
-        trackLayer.setNeedsDisplay()
+        layer.setNeedsDisplay()
     }
     
-    func animateCircle() {
+    func animateCircle(duration: Double, layer: CAShapeLayer) {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.duration = 100.00
+        animation.duration = duration
         animation.fromValue = 0.0
         animation.toValue = 1.0
         animation.timingFunction = CAMediaTimingFunction(name: "linear")
         
-        trackLayer.strokeEnd = 1.0
-        trackLayer.add(animation, forKey: "animateCircle")
+        layer.strokeEnd = 1.0
+        layer.add(animation, forKey: "animateCircle")
     }
     
     func positionForValue(value: Double) {
