@@ -15,6 +15,7 @@
 		929C76811E8045020045512D /* VisualTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929C76801E8045020045512D /* VisualTimer.swift */; };
 		929C76831E80B3F20045512D /* VisualTimerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929C76821E80B3F20045512D /* VisualTimerDelegate.swift */; };
 		929C76851E80B9D50045512D /* VisualTimerTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929C76841E80B9D50045512D /* VisualTimerTrackLayer.swift */; };
+		92E55DE11E818B0A004666B2 /* VisualTimerIndicatorLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E55DE01E818B0A004666B2 /* VisualTimerIndicatorLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		929C76801E8045020045512D /* VisualTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualTimer.swift; sourceTree = "<group>"; };
 		929C76821E80B3F20045512D /* VisualTimerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualTimerDelegate.swift; sourceTree = "<group>"; };
 		929C76841E80B9D50045512D /* VisualTimerTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualTimerTrackLayer.swift; sourceTree = "<group>"; };
+		92E55DE01E818B0A004666B2 /* VisualTimerIndicatorLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualTimerIndicatorLayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				929C76701E8044CC0045512D /* ViewController.swift */,
 				929C76801E8045020045512D /* VisualTimer.swift */,
 				929C76841E80B9D50045512D /* VisualTimerTrackLayer.swift */,
+				92E55DE01E818B0A004666B2 /* VisualTimerIndicatorLayer.swift */,
 				929C76821E80B3F20045512D /* VisualTimerDelegate.swift */,
 				929C76721E8044CC0045512D /* Main.storyboard */,
 				929C76751E8044CC0045512D /* Assets.xcassets */,
@@ -146,6 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				929C76831E80B3F20045512D /* VisualTimerDelegate.swift in Sources */,
+				92E55DE11E818B0A004666B2 /* VisualTimerIndicatorLayer.swift in Sources */,
 				929C76711E8044CC0045512D /* ViewController.swift in Sources */,
 				929C76851E80B9D50045512D /* VisualTimerTrackLayer.swift in Sources */,
 				929C76811E8045020045512D /* VisualTimer.swift in Sources */,
