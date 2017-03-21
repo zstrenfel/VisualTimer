@@ -20,7 +20,7 @@ class VisualTimer: UIView {
     var currLocation: CGPoint = CGPoint()
     
     //Time Variables
-    var time: Double = 0.0
+    var time: Double = 20.0
     var paused: Bool = true
     var interval: Double? = nil
     var countdown: Double = 0.0
@@ -78,8 +78,20 @@ class VisualTimer: UIView {
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.strokeColor = trackColor
         trackLayer.lineWidth = CGFloat(trackWidth)
+        trackLayer.strokeEnd = 0.0
         
         trackLayer.setNeedsDisplay()
+    }
+    
+    func animateCircle() {
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.duration = 100.00
+        animation.fromValue = 0.0
+        animation.toValue = 1.0
+        animation.timingFunction = CAMediaTimingFunction(name: "linear")
+        
+        trackLayer.strokeEnd = 1.0
+        trackLayer.add(animation, forKey: "animateCircle")
     }
     
     func positionForValue(value: Double) {
