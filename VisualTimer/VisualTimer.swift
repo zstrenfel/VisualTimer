@@ -41,23 +41,28 @@ class VisualTimer: UIView {
     var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
     var timerRadius: Double = 100.0
     var timerSpeed: Double = 0.5
-    var indicatorRadius: Double = 5.0
+    var indicatorRadius: Double = 20.0
     
     let startPoint: Double = 0.0
     let endPoint: Double = 360.0
     
     //CoreGraphics Layers
     let trackLayer = VisualTimerTrackLayer()
-    let indicatorLayers: [VisualTimerIndicatorLayer] = []
+    var indicatorLayers: [VisualTimerIndicatorLayer] = []
     var indicatorLayerRadius: CGFloat = 10.0
     var intervalLayerWidth: CGFloat = 10.0
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, timer: ExampleTimer) {
         super.init(frame: frame)
         
         trackLayer.visualTimer = self
         trackLayer.contentsScale = UIScreen.main.scale
         layer.addSublayer(trackLayer)
+        
+        self.countdown = timer.countdown
+        self.primary = timer.primary
+        self.cooldown = timer.cooldown
+        self.interval = timer.interval
         
         if countdown != 0.0 {
             indicatorLayers.append(VisualTimerIndicatorLayer())
@@ -68,7 +73,7 @@ class VisualTimer: UIView {
         }
         
         
-        if interval != 0.0 {
+        if interval > 0.0 {
             let intervalCount = floor(primary / interval)
             for _ in 0...Int(intervalCount) {
                 indicatorLayers.append(VisualTimerIndicatorLayer())
@@ -112,39 +117,26 @@ class VisualTimer: UIView {
             indicatorLayer.setNeedsDisplay()
         }
         
-        let intervalCount = Int(floor(primary / interval))
-        var currInterval = 1.0
-        for _ in currIndex...intervalCount {
-            let indicatorLayer = indicatorLayers[currIndex]
-            let position: CGPoint = positionForValue(value: interval * currInterval)
-            indicatorLayer.frame = CGRect(x: position.x, y: position.y, width: CGFloat(indicatorRadius), height: CGFloat(indicatorRadius))
-            currInterval += 1
-            currIndex += 1
-            indicatorLayer.setNeedsDisplay()
+        if interval > 0.0 {
+            let intervalCount = Int(floor(primary / interval))
+            var currInterval = 1.0
+            for _ in currIndex...intervalCount {
+                let indicatorLayer = indicatorLayers[currIndex]
+                let position: CGPoint = positionForValue(value: interval * currInterval)
+                indicatorLayer.frame = CGRect(x: position.x, y: position.y, width: CGFloat(indicatorRadius), height: CGFloat(indicatorRadius))
+                currInterval += 1
+                currIndex += 1
+                indicatorLayer.setNeedsDisplay()
+            }
         }
+        
         
         CATransaction.commit()
     }
     
-    
-    func drawIndicator(value: Double) {
-        let indicatorCord = positionForValue(value: value)
-        let indicatorTrack = UIBezierPath(
-            arcCenter: indicatorCord,
-            radius: CGFloat(indicatorRadius),
-            startAngle: CGFloat(0),
-            endAngle: CGFloat(2 * M_PI),
-            clockwise: true)
-        
-        indicatorLayer.path = indicatorTrack.cgPath
-        indicatorLayer.fillColor = UIColor.blue.cgColor
-        indicatorLayer.strokeColor = UIColor.blue.cgColor
-        
-        indicatorLayer.setNeedsDisplay()
-    }
-    
     func positionForValue(value: Double) -> CGPoint {
         let r = valueToRadians(value)
+        let radius = Double(trackLayer.bounds.width/2)
         let xCord = radius * cos(r) + Double(bounds.size.width/2)
         let yCord = radius * sin(r) + Double(bounds.size.width/2)
         return CGPoint(x: xCord, y: yCord)
