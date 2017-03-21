@@ -23,7 +23,7 @@ class VisualTimer: UIView {
     var time: Double = 20.0
     var paused: Bool = true
     var interval: Double? = nil
-    var countdown: Double = 0.0
+    var countdown: Double = 5.0
     var cooldown: Double = 0.0
     
     //Visual Design Variables
@@ -35,7 +35,10 @@ class VisualTimer: UIView {
     var timerSpeed: Double = 0.5
     
     //CoreGraphics Layers
-    let trackLayer = CAShapeLayer()
+    let coutndownLayer = CAShapeLayer()
+    let primaryLayer = CAShapeLayer()
+    let cooldownLayer = CAShapeLayer()
+    
     let indicatorLayer = CALayer()
     var indicatorLayerRadius: CGFloat = 10.0
     let intervalLayers: [CALayer] = []
@@ -50,10 +53,6 @@ class VisualTimer: UIView {
         indicatorLayer.backgroundColor = indicatorColor
         layer.addSublayer(indicatorLayer)
         
-        for _ in intervalLayers {
-            //crete interval layers here
-        }
-        
         updateLayerFrames()
     }
     
@@ -62,7 +61,7 @@ class VisualTimer: UIView {
     }
     
     func updateLayerFrames() {
-//        drawTrack()
+        drawTrack(startAngle: CGFloat(0.0), endAngle(CGFloat(valueToRadians(countdown)), color: UIColor.red.cgColor, layer: coutndownLayer))
     }
     
     func drawTrack(startAngle: CGFloat, endAngle: CGFloat, color: CGColor, layer: CAShapeLayer) {
@@ -78,7 +77,7 @@ class VisualTimer: UIView {
         layer.fillColor = UIColor.clear.cgColor
         layer.strokeColor = color
         layer.lineWidth = CGFloat(trackWidth)
-        layer.strokeEnd = 0.0
+//        layer.strokeEnd = 0.0
         
         layer.setNeedsDisplay()
     }
@@ -94,8 +93,17 @@ class VisualTimer: UIView {
         layer.add(animation, forKey: "animateCircle")
     }
     
-    func positionForValue(value: Double) {
-        
+    func positionForValue(value: Double) -> CGPoint {
+        let r = valueToRadians(value)
+        let radius = Double(trackLayer.bounds.width/2)
+        let xCord = radius * cos(r) + Double(bounds.size.width/2)
+        let yCord = radius * sin(r) + Double(bounds.size.width/2)
+        return CGPoint(x: xCord, y: yCord)
+    }
+    
+    //Converts a value to it's corresponding radian value as compared to total time
+    func valueToRadians(_ value: Double) -> Double {
+        return (2 * M_PI) * (value / time)
     }
     
 
