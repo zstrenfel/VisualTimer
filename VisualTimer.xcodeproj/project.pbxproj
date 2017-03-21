@@ -13,6 +13,8 @@
 		929C76761E8044CC0045512D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 929C76751E8044CC0045512D /* Assets.xcassets */; };
 		929C76791E8044CC0045512D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 929C76771E8044CC0045512D /* LaunchScreen.storyboard */; };
 		929C76811E8045020045512D /* VisualTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929C76801E8045020045512D /* VisualTimer.swift */; };
+		929C76831E80B3F20045512D /* VisualTimerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929C76821E80B3F20045512D /* VisualTimerDelegate.swift */; };
+		929C76851E80B9D50045512D /* VisualTimerTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929C76841E80B9D50045512D /* VisualTimerTrackLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		929C76781E8044CC0045512D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		929C767A1E8044CC0045512D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		929C76801E8045020045512D /* VisualTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualTimer.swift; sourceTree = "<group>"; };
+		929C76821E80B3F20045512D /* VisualTimerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualTimerDelegate.swift; sourceTree = "<group>"; };
+		929C76841E80B9D50045512D /* VisualTimerTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualTimerTrackLayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,8 @@
 				929C766E1E8044CC0045512D /* AppDelegate.swift */,
 				929C76701E8044CC0045512D /* ViewController.swift */,
 				929C76801E8045020045512D /* VisualTimer.swift */,
+				929C76841E80B9D50045512D /* VisualTimerTrackLayer.swift */,
+				929C76821E80B3F20045512D /* VisualTimerDelegate.swift */,
 				929C76721E8044CC0045512D /* Main.storyboard */,
 				929C76751E8044CC0045512D /* Assets.xcassets */,
 				929C76771E8044CC0045512D /* LaunchScreen.storyboard */,
@@ -139,7 +145,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				929C76831E80B3F20045512D /* VisualTimerDelegate.swift in Sources */,
 				929C76711E8044CC0045512D /* ViewController.swift in Sources */,
+				929C76851E80B9D50045512D /* VisualTimerTrackLayer.swift in Sources */,
 				929C76811E8045020045512D /* VisualTimer.swift in Sources */,
 				929C766F1E8044CC0045512D /* AppDelegate.swift in Sources */,
 			);
@@ -303,6 +311,7 @@
 				929C767F1E8044CC0045512D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

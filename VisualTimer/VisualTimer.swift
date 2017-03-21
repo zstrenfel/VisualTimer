@@ -16,12 +16,17 @@ class VisualTimer: UIView {
             updateLayerFrames()
         }
     }
-//    weak var delegate: VisualTimerDelegate? = nil
+    
+    weak var delegate: VisualTimerDelegate? = nil
     var currLocation: CGPoint = CGPoint()
     
     //Time Variables
     var time: Double = 10.0
-    var currTime: Double = 5.0
+    var currTime: Double = 0.0 {
+        didSet {
+            updateLayerFrames()
+        }
+    }
     
     var paused: Bool = true
     var interval: Double? = nil
@@ -42,7 +47,7 @@ class VisualTimer: UIView {
     let endPoint: Double = 360.0
     
     //CoreGraphics Layers
-    let trackLayer = CAShapeLayer()
+    let trackLayer = VisualTimerTrackLayer()
     let indicatorLayer = CAShapeLayer()
     var indicatorLayerRadius: CGFloat = 10.0
     let intervalLayers: [CALayer] = []
@@ -51,7 +56,8 @@ class VisualTimer: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        trackLayer.backgroundColor = trackColor
+        trackLayer.visualTimer = self
+        trackLayer.contentsScale = UIScreen.main.scale
         layer.addSublayer(trackLayer)
         
         indicatorLayer.backgroundColor = indicatorColor
@@ -70,7 +76,7 @@ class VisualTimer: UIView {
     
     func updateLayerFrames() {
         drawTrack()
-        drawIndicator()
+        drawIndicator(value: currTime)
     }
     
     func drawTrack() {
@@ -92,8 +98,8 @@ class VisualTimer: UIView {
         trackLayer.setNeedsDisplay()
     }
     
-    func drawIndicator() {
-        let indicatorCord = positionForValue(value: currTime)
+    func drawIndicator(value: Double) {
+        let indicatorCord = positionForValue(value: value)
         let indicatorTrack = UIBezierPath(
             arcCenter: indicatorCord,
             radius: CGFloat(indicatorRadius),
