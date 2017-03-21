@@ -61,7 +61,14 @@ class VisualTimer: UIView {
         
         self.countdown = timer.countdown
         self.primary = timer.primary
-        self.cooldown = timer.cooldown
+
+        if timer.cooldown != 0.0 {
+            //starting location of cooldown
+            self.cooldown = timer.countdown + timer.primary
+        }
+        
+        //total of all three
+        self.time = timer.countdown + timer.cooldown + timer.primary
         self.interval = timer.interval
         
         if countdown != 0.0 {
