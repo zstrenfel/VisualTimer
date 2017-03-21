@@ -10,7 +10,9 @@ import UIKit
 import QuartzCore
 
 class VisualTimerTrackLayer: CALayer {
+    
     weak var visualTimer: VisualTimer?
+    var strokeStart: Double = 0.0
     
     override func draw(in ctx: CGContext) {
         if let timer = visualTimer {
@@ -33,11 +35,13 @@ class VisualTimerTrackLayer: CALayer {
             ctx.drawPath(using: .stroke)
             
             let animation = CABasicAnimation(keyPath: "path")
-            animation.toValue = circleTrack
+            animation.fromValue = self.strokeStart
+            animation.toValue = timer.currTime/timer.time
             animation.duration = 1
             animation.fillMode = kCAFillModeBoth
             animation.isRemovedOnCompletion = false
             self.add(animation, forKey: animation.keyPath)
+            self.strokeStart = timer.currTime/timer.time
         }
     }
 }
