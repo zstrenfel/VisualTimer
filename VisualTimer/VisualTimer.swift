@@ -24,7 +24,8 @@ class VisualTimer: UIView {
     var paused: Bool = true
     var interval: Double? = nil
     var countdown: Double = 5.0
-    var cooldown: Double = 0.0
+    var primary: Double = 10.0
+    var cooldown: Double = 5.0
     
     //Visual Design Variables
     var inset: CGFloat = 8.0
@@ -35,7 +36,7 @@ class VisualTimer: UIView {
     var timerSpeed: Double = 0.5
     
     //CoreGraphics Layers
-    let coutndownLayer = CAShapeLayer()
+    let countdownLayer = CAShapeLayer()
     let primaryLayer = CAShapeLayer()
     let cooldownLayer = CAShapeLayer()
     
@@ -47,8 +48,11 @@ class VisualTimer: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        trackLayer.backgroundColor = trackColor
-        layer.addSublayer(trackLayer)
+        countdownLayer.backgroundColor = trackColor
+        layer.addSublayer(countdownLayer)
+        
+        layer.addSublayer(primaryLayer)
+        layer.addSublayer(cooldownLayer)
         
         indicatorLayer.backgroundColor = indicatorColor
         layer.addSublayer(indicatorLayer)
@@ -61,7 +65,9 @@ class VisualTimer: UIView {
     }
     
     func updateLayerFrames() {
-        drawTrack(startAngle: CGFloat(0.0), endAngle(CGFloat(valueToRadians(countdown)), color: UIColor.red.cgColor, layer: coutndownLayer))
+        drawTrack(startAngle: 0.0, endAngle:  CGFloat(valueToRadians(countdown)), color: UIColor.red.cgColor, layer: countdownLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), color: UIColor.blue.cgColor, layer: primaryLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), color: UIColor.green.cgColor, layer: cooldownLayer)
     }
     
     func drawTrack(startAngle: CGFloat, endAngle: CGFloat, color: CGColor, layer: CAShapeLayer) {
@@ -95,7 +101,7 @@ class VisualTimer: UIView {
     
     func positionForValue(value: Double) -> CGPoint {
         let r = valueToRadians(value)
-        let radius = Double(trackLayer.bounds.width/2)
+        let radius = Double(bounds.size.width/2 - inset)
         let xCord = radius * cos(r) + Double(bounds.size.width/2)
         let yCord = radius * sin(r) + Double(bounds.size.width/2)
         return CGPoint(x: xCord, y: yCord)

@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func animate(_ sender: UIButton) {
-        visualTimer.animateCircle()
+//        visualTimer.animateCircle()
     }
 
 }
