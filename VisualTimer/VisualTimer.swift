@@ -115,15 +115,15 @@ class VisualTimer: UIView {
     
     func pauseAnimation() {
         paused = true
-        var pausedTime = CACurrentMediaTime()
+        var pausedTime = CACurrentMediaTime() - countdownLayer.beginTime
         countdownLayer.speed = 0.0
         countdownLayer.timeOffset = pausedTime
         
-        pausedTime = CACurrentMediaTime()
+        pausedTime = CACurrentMediaTime() - primaryLayer.beginTime
         primaryLayer.speed = 0.0
         primaryLayer.timeOffset = pausedTime
         
-        pausedTime = CACurrentMediaTime()
+        pausedTime = CACurrentMediaTime() - cooldownLayer.beginTime
         cooldownLayer.speed = 0.0
         cooldownLayer.timeOffset = pausedTime
     }
