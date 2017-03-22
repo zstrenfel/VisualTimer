@@ -105,9 +105,9 @@ class VisualTimer: UIView {
     }
     
     func drawTrack(startAngle: CGFloat, endAngle: CGFloat, color: CGColor, layer: CAShapeLayer) {
-        let radius: CGFloat = min(bounds.size.width/2 - inset, bounds.size.height/2 -  inset)
+        let radius: CGFloat = min(bounds.size.width/2 - inset, bounds.size.height/2 - inset)
         let circleTrack = UIBezierPath(
-            arcCenter: CGPoint(x: radius, y: radius),
+            arcCenter: CGPoint(x: bounds.size.width/2, y: bounds.size.height/2),
             radius: CGFloat(radius - CGFloat(trackWidth / 2)),
             startAngle: startAngle,
             endAngle: endAngle,
@@ -155,6 +155,12 @@ class VisualTimer: UIView {
         }
     }
     
+    func drawInterval(position: CGPoint?, color: CGColor, layer: CAShapeLayer) {
+        if let pos = position {
+            
+        }
+    }
+    
     func positionForValue(value: Double) -> CGPoint? {
         guard value > 0.0 else {
             return nil
@@ -162,8 +168,9 @@ class VisualTimer: UIView {
         
         let r = valueToRadians(value)
         let radius = Double(bounds.size.width/2 - inset)
-        let xCord = radius * cos(r) + Double(bounds.size.width/2)
-        let yCord = radius * sin(r) + Double(bounds.size.width/2)
+        let xCord = (radius - trackWidth/2) * cos(r) + Double(bounds.size.width/2)
+        let yCord = (radius - trackWidth/2) * sin(r) + Double(bounds.size.height/2)
+        
         return CGPoint(x: xCord, y: yCord)
     }
     
