@@ -161,6 +161,13 @@ class VisualTimer: UIView {
         countdownLayer.removeAllAnimations()
         primaryLayer.removeAllAnimations()
         cooldownLayer.removeAllAnimations()
+        
+        countdownLayer.speed = 1.0
+        countdownLayer.timeOffset = 0.0
+        primaryLayer.speed = 1.0
+        primaryLayer.timeOffset = 0.0
+        cooldownLayer.speed = 1.0
+        cooldownLayer.timeOffset = 0.0
     }
     
     func animateCircle(duration: Double, beginTime: Double, layer: CAShapeLayer, callback: (() -> Void)?) {
@@ -177,7 +184,6 @@ class VisualTimer: UIView {
     }
     
     // MARK: - Drawing Functions
-    
     func drawTrack(startAngle: CGFloat, endAngle: CGFloat, color: CGColor, layer: CAShapeLayer) {
         let radius: CGFloat = min(bounds.size.width/2 - inset, bounds.size.height/2 - inset)
         let circleTrack = UIBezierPath(
