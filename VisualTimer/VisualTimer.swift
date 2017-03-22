@@ -20,15 +20,21 @@ class VisualTimer: UIView {
     var currLocation: CGPoint = CGPoint()
     
     //Time Variables
+    var timer: ExampleTimer? = nil {
+        didSet {
+            updateTimer(with: timer!)
+        }
+    }
+    
     var started: Bool = false
     var paused: Bool = false
-    var countdown: Double = 5.0
-    var primary: Double = 10.0
-    var cooldown: Double = 5.0
-    var time: Double = 20.0
+    var countdown: Double = 0.0
+    var primary: Double = 0.0
+    var cooldown: Double = 0.0
+    var time: Double = 0.0
     
-    var interval: Double? = 2.0
-    let intervalRepeat: Bool = true
+    var interval: Double? = 0.0
+    var intervalRepeat: Bool = true
     
     //Visual Design Variables
     var inset: CGFloat = 60.0
@@ -36,8 +42,9 @@ class VisualTimer: UIView {
     var trackColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0).cgColor
     var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
     var degreeOfRotation: Double = M_PI_2
-    
+    var baseTrackColor: UIColor = UIColor.black.withAlphaComponent(0.03)
     //CoreGraphics Layers
+    let baseTrackLayer = CAShapeLayer()
     let startIndicator = CAShapeLayer()
     
     let countdownLayer = CAShapeLayer()
@@ -54,7 +61,7 @@ class VisualTimer: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        layer.addSublayer(baseTrackLayer)
         
         layer.addSublayer(countdownLayer)
         layer.addSublayer(primaryLayer)
@@ -64,15 +71,6 @@ class VisualTimer: UIView {
         layer.addSublayer(countdownIndicator)
         layer.addSublayer(primaryIndicator)
         
-        if interval != nil {
-            let intervalCount = !intervalRepeat ? 1 : Int(floor(primary/interval!))
-            for _ in 0..<intervalCount {
-                let intervalLayer = CAShapeLayer()
-                intervalLayers.append(intervalLayer)
-                layer.addSublayer(intervalLayer)
-            }
-        }
-        
         updateLayerFrames()
     }
     
@@ -80,10 +78,34 @@ class VisualTimer: UIView {
         super.init(coder: coder)
     }
     
+    func updateTimer(with timer: ExampleTimer) {
+        self.countdown = timer.countdown
+        self.primary = timer.primary
+        self.cooldown = timer.cooldown
+        self.interval = timer.interval
+        self.intervalRepeat = timer.intervalRepeat
+        
+        self.time = countdown + primary + cooldown
+        
+        if interval != nil && interval! > 0.0 {
+            createIntervalLayers()
+        }
+    }
+    
+    func createIntervalLayers() {
+        let intervalCount = !intervalRepeat ? 1 : Int(floor(primary/interval!))
+        for _ in 0..<intervalCount {
+            let intervalLayer = CAShapeLayer()
+            intervalLayers.append(intervalLayer)
+            layer.addSublayer(intervalLayer)
+        }
+    }
+    
     func updateLayerFrames() {
-        drawTrack(startAngle: CGFloat(valueToRadians(0.0)), endAngle:  CGFloat(valueToRadians(countdown)), color: UIColor.lightGray.cgColor, layer: countdownLayer)
-        drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), color: UIColor.gray.cgColor, layer: primaryLayer)
-        drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), color: UIColor.lightGray.cgColor, layer: cooldownLayer)
+        drawTrack(startAngle: 0.0, endAngle: CGFloat(2 * M_PI), width: trackWidth + 5.0, visible: true, color: baseTrackColor.cgColor, layer: baseTrackLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(0.0)), endAngle:  CGFloat(valueToRadians(countdown)), width: trackWidth, color: UIColor.lightGray.cgColor, layer: countdownLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), width: trackWidth, color: UIColor.gray.cgColor, layer: primaryLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), width: trackWidth, color: UIColor.lightGray.cgColor, layer: cooldownLayer)
         
         drawIndicator(position: positionForValue(value: 0.0), color: UIColor.darkGray.cgColor, layer: startIndicator)
         drawIndicator(position: positionForValue(value: countdown), color: UIColor.darkGray.cgColor, layer: countdownIndicator)
@@ -174,7 +196,7 @@ class VisualTimer: UIView {
     }
     
     // MARK: - Drawing Functions
-    func drawTrack(startAngle: CGFloat, endAngle: CGFloat, color: CGColor, layer: CAShapeLayer) {
+    func drawTrack(startAngle: CGFloat, endAngle: CGFloat, width: Double, visible: Bool = false, color: CGColor, layer: CAShapeLayer) {
         let radius: CGFloat = min(bounds.size.width/2 - inset, bounds.size.height/2 - inset)
         let circleTrack = UIBezierPath(
             arcCenter: CGPoint(x: bounds.size.width/2, y: bounds.size.height/2),
@@ -186,8 +208,8 @@ class VisualTimer: UIView {
         layer.path = circleTrack.cgPath
         layer.fillColor = UIColor.clear.cgColor
         layer.strokeColor = color
-        layer.lineWidth = CGFloat(trackWidth)
-        layer.strokeEnd = 0.0
+        layer.lineWidth = CGFloat(width)
+        layer.strokeEnd = visible ? 1.0 : 0.0
         layer.lineCap = kCALineCapRound
         
         layer.setNeedsDisplay()

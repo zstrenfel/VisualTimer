@@ -8,14 +8,22 @@
 
 import UIKit
 
+struct ExampleTimer {
+    var countdown: Double
+    var primary: Double
+    var cooldown: Double
+    var interval: Double
+    var intervalRepeat: Bool
+}
+
 class ViewController: UIViewController {
     
     let visualTimer = VisualTimer(frame: CGRect.zero)
+    let exampleTimer = ExampleTimer(countdown: 2.0, primary: 10.0, cooldown: 2.0, interval: 2.0, intervalRepeat: true)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        visualTimer.backgroundColor = UIColor.red
+        visualTimer.timer = exampleTimer
         view.addSubview(visualTimer)
     }
     
