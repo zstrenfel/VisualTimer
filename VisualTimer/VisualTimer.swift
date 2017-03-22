@@ -39,6 +39,8 @@ class VisualTimer: UIView {
     var degreeOfRotation: Double = M_PI_2
     
     //CoreGraphics Layers
+    let startIndicator = CAShapeLayer()
+    
     let countdownLayer = CAShapeLayer()
     let countdownIndicator = CAShapeLayer()
     
@@ -55,10 +57,12 @@ class VisualTimer: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        
         layer.addSublayer(countdownLayer)
         layer.addSublayer(primaryLayer)
         layer.addSublayer(cooldownLayer)
         
+        layer.addSublayer(startIndicator)
         layer.addSublayer(countdownIndicator)
         layer.addSublayer(primaryIndicator)
         
@@ -86,12 +90,13 @@ class VisualTimer: UIView {
     }
     
     func updateLayerFrames() {
-        drawTrack(startAngle: CGFloat(valueToRadians(0.0)), endAngle:  CGFloat(valueToRadians(countdown)), color: UIColor.red.cgColor, layer: countdownLayer)
-        drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), color: UIColor.blue.cgColor, layer: primaryLayer)
-        drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), color: UIColor.green.cgColor, layer: cooldownLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(0.0)), endAngle:  CGFloat(valueToRadians(countdown)), color: UIColor.lightGray.cgColor, layer: countdownLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), color: UIColor.gray.cgColor, layer: primaryLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), color: UIColor.lightGray.cgColor, layer: cooldownLayer)
         
-        drawIndicator(position: positionForValue(value: countdown), color: UIColor.yellow.cgColor, layer: countdownIndicator)
-        drawIndicator(position: positionForValue(value: primary + countdown), color: UIColor.magenta.cgColor, layer: primaryIndicator)
+        drawIndicator(position: positionForValue(value: 0.0), color: UIColor.darkGray.cgColor, layer: startIndicator)
+        drawIndicator(position: positionForValue(value: countdown), color: UIColor.darkGray.cgColor, layer: countdownIndicator)
+        drawIndicator(position: positionForValue(value: primary + countdown), color: UIColor.darkGray.cgColor, layer: primaryIndicator)
         
         if interval != nil {
             for i in 0..<intervalLayers.count {
@@ -248,10 +253,6 @@ class VisualTimer: UIView {
     // MARK: - Utilities
     
     func positionForValue(value: Double) -> CGPoint? {
-        guard value > 0.0 else {
-            return nil
-        }
-        
         let r = valueToRadians(value)
         let radius = Double(bounds.size.width/2 - inset)
         let xCord = (radius - trackWidth/2) * cos(r) + Double(bounds.size.width/2)
