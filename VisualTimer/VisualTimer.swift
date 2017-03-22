@@ -35,10 +35,10 @@ class VisualTimer: UIView {
     //Visual Design Variables
     
     //Colors
-    @IBInspectable var baseTrackColor = UIColor.black.withAlphaComponent(0.03)
-    @IBInspectable var primaryTrackColor = UIColor.darkGray
-    @IBInspectable var secondaryTrackColor = UIColor.lightGray
-    @IBInspectable var indicatorColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0)
+    @IBInspectable var baseTrackColor: UIColor = UIColor.black.withAlphaComponent(0.03)
+    @IBInspectable var primaryTrackColor: UIColor = UIColor.darkGray
+    @IBInspectable var secondaryTrackColor: UIColor = UIColor.lightGray
+    @IBInspectable var indicatorColor: UIColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0)
     
     
     var inset: CGFloat = 8.0
@@ -85,7 +85,6 @@ class VisualTimer: UIView {
         self.cooldown = timer.cooldown
         self.interval = timer.interval
         self.intervalRepeat = timer.intervalRepeat
-        
         self.time = countdown + primary + cooldown
         
         if interval != nil && interval! > 0.0 {
