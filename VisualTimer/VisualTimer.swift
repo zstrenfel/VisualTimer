@@ -121,7 +121,26 @@ class VisualTimer: UIView {
     }
     
     func resumeAnimation() {
+        var pausedTime = countdownLayer.timeOffset
+        let timeSincePaused = CACurrentMediaTime() - pausedTime
         
+        countdownLayer.speed = 1.0
+        countdownLayer.timeOffset = 0.0
+        countdownLayer.beginTime = timeSincePaused
+        
+        primaryLayer.speed = 1.0
+        primaryLayer.timeOffset = 0.0
+        primaryLayer.beginTime = timeSincePaused
+        
+        cooldownLayer.speed = 1.0
+        cooldownLayer.timeOffset = 0.0
+        cooldownLayer.beginTime = timeSincePaused
+    }
+    
+    func clearAnimations() {
+        countdownLayer.removeAllAnimations()
+        primaryLayer.removeAllAnimations()
+        cooldownLayer.removeAllAnimations()
     }
     
     func animateCircle(duration: Double, beginTime: Double, layer: CAShapeLayer, callback: (() -> Void)?) {
