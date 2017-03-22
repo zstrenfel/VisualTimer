@@ -30,7 +30,7 @@ class VisualTimer: UIView {
     let intervalRepeat: Bool = true
     
     //Visual Design Variables
-    var inset: CGFloat = 40.0
+    var inset: CGFloat = 60.0
     var trackWidth: Double = 10.0
     var trackColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0).cgColor
     var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
@@ -100,11 +100,44 @@ class VisualTimer: UIView {
                 }
             }
         }
-        
+    }
+    
+    
+    // MARK: - Animation Functions
+    func beginAnimation() {
         animateCircle(duration: countdown, beginTime: CACurrentMediaTime(), layer: countdownLayer, callback: nil)
         animateCircle(duration: primary, beginTime:  CACurrentMediaTime() + countdown, layer: primaryLayer, callback: nil)
         animateCircle(duration: cooldown, beginTime:  CACurrentMediaTime() + primary + countdown, layer: cooldownLayer, callback: nil)
     }
+    
+    func pauseAnimation() {
+        let pausedTime = CACurrentMediaTime()
+        countdownLayer.speed = 0.0
+        countdownLayer.timeOffset = pausedTime
+        primaryLayer.speed = 0.0
+        primaryLayer.timeOffset = pausedTime
+        cooldownLayer.speed = 0.0
+        cooldownLayer.timeOffset = pausedTime
+    }
+    
+    func resumeAnimation() {
+        
+    }
+    
+    func animateCircle(duration: Double, beginTime: Double, layer: CAShapeLayer, callback: (() -> Void)?) {
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.beginTime = beginTime
+        animation.duration = duration
+        animation.fromValue = 0.0
+        animation.toValue = 1.0
+        animation.timingFunction = CAMediaTimingFunction(name: "linear")
+        animation.fillMode = kCAFillModeForwards
+        animation.isRemovedOnCompletion = false
+        
+        layer.add(animation, forKey: "animateCircle")
+    }
+    
+    // MARK: - Drawing Functions
     
     func drawTrack(startAngle: CGFloat, endAngle: CGFloat, color: CGColor, layer: CAShapeLayer) {
         let radius: CGFloat = min(bounds.size.width/2 - inset, bounds.size.height/2 - inset)
@@ -125,23 +158,7 @@ class VisualTimer: UIView {
         layer.setNeedsDisplay()
     }
     
-    func animateCircle(duration: Double, beginTime: Double, layer: CAShapeLayer, callback: (() -> Void)?) {
-        CATransaction.begin()
 
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.duration = duration
-        animation.fromValue = 0.0
-        animation.toValue = 1.0
-        animation.timingFunction = CAMediaTimingFunction(name: "linear")
-        animation.beginTime = beginTime
-        animation.fillMode = kCAFillModeBackwards
-        
-        layer.strokeEnd = 1.0
-        
-        layer.add(animation, forKey: "animateCircle")
-        
-        CATransaction.commit()
-    }
     
     func drawInterval(midpoint: CGPoint?, value: Double, color: CGColor, layer: CAShapeLayer) {
         if let mid = midpoint {
@@ -182,6 +199,8 @@ class VisualTimer: UIView {
             layer.setNeedsDisplay()
         }
     }
+    
+    // MARK: - Utilities
     
     func positionForValue(value: Double) -> CGPoint? {
         guard value > 0.0 else {
