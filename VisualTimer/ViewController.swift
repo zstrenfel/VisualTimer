@@ -33,8 +33,19 @@ class ViewController: UIViewController {
     }
 
     @IBAction func animate(_ sender: UIButton) {
-        visualTimer.beginAnimation()
+        if visualTimer.started {
+            if visualTimer.paused {
+                visualTimer.resumeAnimation()
+            } else {
+                visualTimer.pauseAnimation()
+            }
+        } else {
+            visualTimer.beginAnimation()
+        }
     }
 
+    @IBAction func clearAnimations(_ sender: UIButton) {
+        visualTimer.clearAnimations()
+    }
 }
 

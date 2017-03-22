@@ -20,7 +20,8 @@ class VisualTimer: UIView {
     var currLocation: CGPoint = CGPoint()
     
     //Time Variables
-    var paused: Bool = true
+    var started: Bool = false
+    var paused: Bool = false
     var countdown: Double = 5.0
     var primary: Double = 10.0
     var cooldown: Double = 5.0
@@ -105,39 +106,58 @@ class VisualTimer: UIView {
     
     // MARK: - Animation Functions
     func beginAnimation() {
+        started = true
+        paused = false
         animateCircle(duration: countdown, beginTime: CACurrentMediaTime(), layer: countdownLayer, callback: nil)
         animateCircle(duration: primary, beginTime:  CACurrentMediaTime() + countdown, layer: primaryLayer, callback: nil)
         animateCircle(duration: cooldown, beginTime:  CACurrentMediaTime() + primary + countdown, layer: cooldownLayer, callback: nil)
     }
     
     func pauseAnimation() {
-        let pausedTime = CACurrentMediaTime()
+        paused = true
+        var pausedTime = CACurrentMediaTime()
         countdownLayer.speed = 0.0
         countdownLayer.timeOffset = pausedTime
+        
+        pausedTime = CACurrentMediaTime()
         primaryLayer.speed = 0.0
         primaryLayer.timeOffset = pausedTime
+        
+        pausedTime = CACurrentMediaTime()
         cooldownLayer.speed = 0.0
         cooldownLayer.timeOffset = pausedTime
     }
     
     func resumeAnimation() {
+        paused = false
         var pausedTime = countdownLayer.timeOffset
-        let timeSincePaused = CACurrentMediaTime() - pausedTime
+        var timeSincePaused: CFTimeInterval
         
         countdownLayer.speed = 1.0
         countdownLayer.timeOffset = 0.0
+        countdownLayer.beginTime = 0.0
+        timeSincePaused = countdownLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         countdownLayer.beginTime = timeSincePaused
         
+        pausedTime = primaryLayer.timeOffset
         primaryLayer.speed = 1.0
         primaryLayer.timeOffset = 0.0
+        primaryLayer.beginTime = 0.0
+        timeSincePaused = primaryLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         primaryLayer.beginTime = timeSincePaused
         
+        pausedTime = cooldownLayer.timeOffset
         cooldownLayer.speed = 1.0
         cooldownLayer.timeOffset = 0.0
+        cooldownLayer.beginTime = 0.0
+        timeSincePaused = cooldownLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         cooldownLayer.beginTime = timeSincePaused
     }
     
     func clearAnimations() {
+        started = false
+        paused = false
+        
         countdownLayer.removeAllAnimations()
         primaryLayer.removeAllAnimations()
         cooldownLayer.removeAllAnimations()

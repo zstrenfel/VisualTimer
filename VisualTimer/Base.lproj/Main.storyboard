@@ -23,18 +23,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kXf-jG-4Yq">
-                                <rect key="frame" x="16" y="603" width="343" height="30"/>
+                                <rect key="frame" x="16" y="583" width="343" height="30"/>
                                 <state key="normal" title="Toggle"/>
                                 <connections>
                                     <action selector="animate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uFi-y2-Ns0"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z8k-ke-6Gv">
+                                <rect key="frame" x="16" y="621" width="343" height="30"/>
+                                <state key="normal" title="Clear">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearAnimations:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cua-oK-dsZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="kXf-jG-4Yq" secondAttribute="trailing" id="ZQU-kd-W8s"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="kXf-jG-4Yq" secondAttribute="bottom" constant="34" id="bXr-LZ-pYm"/>
-                            <constraint firstItem="kXf-jG-4Yq" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="t1a-Yc-wRo"/>
+                            <constraint firstItem="kXf-jG-4Yq" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="GmQ-Cn-oUP"/>
+                            <constraint firstItem="kXf-jG-4Yq" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="JtA-EO-D3L"/>
+                            <constraint firstItem="Z8k-ke-6Gv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="KjF-YX-VAC"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Z8k-ke-6Gv" secondAttribute="trailing" id="WyP-Co-0i2"/>
+                            <constraint firstItem="Z8k-ke-6Gv" firstAttribute="top" secondItem="kXf-jG-4Yq" secondAttribute="bottom" constant="8" id="fPV-eF-kRJ"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Z8k-ke-6Gv" secondAttribute="bottom" constant="16" id="tQD-k4-RWb"/>
                         </constraints>
                     </view>
                 </viewController>
