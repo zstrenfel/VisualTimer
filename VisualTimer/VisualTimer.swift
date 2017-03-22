@@ -84,6 +84,14 @@ class VisualTimer: UIView {
         self.interval = timer.interval
         self.intervalRepeat = timer.intervalRepeat
         self.time = countdown + primary + cooldown
+
+        timeLabel.frame = CGRect(x: bounds.width - 50, y: bounds.height/2, width: bounds.width - 100, height: 50)
+        timeLabel.center = CGPoint(x: bounds.width/2, y: bounds.height/2)
+        timeLabel.textAlignment = .center
+        timeLabel.backgroundColor = .red
+        timeLabel.font = timeLabel.font.withSize(36.0)
+        timeLabel.text = "00:00:00"
+        self.addSubview(timeLabel)
         
         if interval != nil && interval! > 0.0 {
             createIntervalLayers()
