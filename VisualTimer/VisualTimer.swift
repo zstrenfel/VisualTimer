@@ -35,6 +35,7 @@ class VisualTimer: UIView {
     var trackColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0).cgColor
     var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
     var timerSpeed: Double = 0.5
+    var degreeOfRotation: Double = M_PI_2
     
     //CoreGraphics Layers
     let countdownLayer = CAShapeLayer()
@@ -95,7 +96,7 @@ class VisualTimer: UIView {
             for i in 0..<intervalLayers.count {
                 let intervalVal = interval! * Double(i + 1)
                 if intervalVal != primary {
-                    drawIndicator(position: positionForValue(value: intervalVal + countdown), color: UIColor.brown.cgColor, layer: intervalLayers[i])
+                    drawInterval(midpoint: positionForValue(value: intervalVal + countdown), value: intervalVal + countdown, color: UIColor.black.cgColor, layer: intervalLayers[i])
                 }
             }
         }
@@ -119,6 +120,7 @@ class VisualTimer: UIView {
         layer.strokeColor = color
         layer.lineWidth = CGFloat(trackWidth)
         layer.strokeEnd = 0.0
+        layer.lineCap = kCALineCapRound
         
         layer.setNeedsDisplay()
     }
@@ -139,6 +141,31 @@ class VisualTimer: UIView {
         layer.add(animation, forKey: "animateCircle")
         
         CATransaction.commit()
+    }
+    
+    func drawInterval(midpoint: CGPoint?, value: Double, color: CGColor, layer: CAShapeLayer) {
+        if let mid = midpoint {
+            let path = UIBezierPath()
+            var startPoint = CGPoint()
+            var endPoint = CGPoint()
+            
+            let angle = valueToRadians(value)
+            startPoint.x = mid.x + CGFloat((trackWidth/2) * cos(angle))
+            startPoint.y = mid.y + CGFloat((trackWidth/2) * sin(angle))
+            
+            endPoint.x = mid.x + CGFloat((-trackWidth/2) * cos(angle))
+            endPoint.y = mid.y + CGFloat((-trackWidth/2) * sin(angle))
+            
+            path.move(to: startPoint)
+            path.addLine(to: endPoint)
+            layer.path = path.cgPath
+            layer.fillColor = color
+            layer.strokeColor = color
+            layer.lineWidth = 2.0
+            layer.lineCap = kCALineCapRound
+            
+            layer.setNeedsDisplay()
+        }
     }
     
     func drawIndicator(position: CGPoint?, color: CGColor, layer: CAShapeLayer) {
@@ -172,7 +199,7 @@ class VisualTimer: UIView {
     //Converts a value to it's corresponding radian value as compared to total time
     func valueToRadians(_ value: Double) -> Double {
         let angle = (2 * M_PI) * (value / time)
-        let translatedAngle = angle + M_PI_2
+        let translatedAngle = angle + degreeOfRotation
         return translatedAngle
     }
     
