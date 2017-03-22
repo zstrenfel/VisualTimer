@@ -35,10 +35,10 @@ class VisualTimer: UIView {
     //Visual Design Variables
     
     //Colors
-    @IBInspectable var baseTrackColor: CGColor = UIColor.black.withAlphaComponent(0.03).cgColor
-    @IBInspectable var primaryTrackColor: CGColor = UIColor.darkGray.cgColor
-    @IBInspectable var secondaryTrackColor: CGColor = UIColor.lightGray.cgColor
-    @IBInspectable var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
+    @IBInspectable var baseTrackColor = UIColor.black.withAlphaComponent(0.03)
+    @IBInspectable var primaryTrackColor = UIColor.darkGray
+    @IBInspectable var secondaryTrackColor = UIColor.lightGray
+    @IBInspectable var indicatorColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0)
     
     
     var inset: CGFloat = 8.0
@@ -82,6 +82,11 @@ class VisualTimer: UIView {
         super.init(coder: coder)
     }
     
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        updateLayerFrames()
+    }
+    
     
     func updateTimer(with timer: ExampleTimer) {
         self.countdown = timer.countdown
@@ -107,14 +112,14 @@ class VisualTimer: UIView {
     }
     
     func updateLayerFrames() {
-        drawTrack(startAngle: 0.0, endAngle: CGFloat(2 * M_PI), width: trackWidth + 5.0, visible: true, color: baseTrackColor, layer: baseTrackLayer)
-        drawTrack(startAngle: CGFloat(valueToRadians(0.0)), endAngle:  CGFloat(valueToRadians(countdown)), width: trackWidth, color: secondaryTrackColor, layer: countdownLayer)
-        drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), width: trackWidth, color: primaryTrackColor, layer: primaryLayer)
-        drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), width: trackWidth, color: secondaryTrackColor, layer: cooldownLayer)
+        drawTrack(startAngle: 0.0, endAngle: CGFloat(2 * M_PI), width: trackWidth + 5.0, visible: true, color: baseTrackColor.cgColor, layer: baseTrackLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(0.0)), endAngle:  CGFloat(valueToRadians(countdown)), width: trackWidth, color: secondaryTrackColor.cgColor, layer: countdownLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), width: trackWidth, color: primaryTrackColor.cgColor, layer: primaryLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), width: trackWidth, color: secondaryTrackColor.cgColor, layer: cooldownLayer)
         
-        drawIndicator(position: positionForValue(value: 0.0), color: indicatorColor, layer: startIndicator)
-        drawIndicator(position: positionForValue(value: countdown), color: indicatorColor, layer: countdownIndicator)
-        drawIndicator(position: positionForValue(value: primary + countdown), color: indicatorColor, layer: primaryIndicator)
+        drawIndicator(position: positionForValue(value: 0.0), color: indicatorColor.cgColor, layer: startIndicator)
+        drawIndicator(position: positionForValue(value: countdown), color: indicatorColor.cgColor, layer: countdownIndicator)
+        drawIndicator(position: positionForValue(value: primary + countdown), color: indicatorColor.cgColor, layer: primaryIndicator)
         
         if interval != nil {
             for i in 0..<intervalLayers.count {
