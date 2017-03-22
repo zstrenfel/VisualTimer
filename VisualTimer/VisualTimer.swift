@@ -20,12 +20,12 @@ class VisualTimer: UIView {
     var currLocation: CGPoint = CGPoint()
     
     //Time Variables
-    var time: Double = 20.0
     var paused: Bool = true
     var interval: Double? = nil
-    var countdown: Double = 5.0
+    var countdown: Double = 0.0
     var primary: Double = 10.0
     var cooldown: Double = 5.0
+    var time: Double = 15.0
     
     //Visual Design Variables
     var inset: CGFloat = 8.0
@@ -68,6 +68,9 @@ class VisualTimer: UIView {
         drawTrack(startAngle: 0.0, endAngle:  CGFloat(valueToRadians(countdown)), color: UIColor.red.cgColor, layer: countdownLayer)
         drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), color: UIColor.blue.cgColor, layer: primaryLayer)
         drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), color: UIColor.green.cgColor, layer: cooldownLayer)
+        animateCircle(duration: countdown, beginTime: CACurrentMediaTime() + 0.0, layer: countdownLayer, callback: nil)
+        animateCircle(duration: primary, beginTime:  CACurrentMediaTime() + countdown, layer: primaryLayer, callback: nil)
+        animateCircle(duration: cooldown, beginTime:  CACurrentMediaTime() + primary + countdown, layer: cooldownLayer, callback: nil)
     }
     
     func drawTrack(startAngle: CGFloat, endAngle: CGFloat, color: CGColor, layer: CAShapeLayer) {
@@ -83,20 +86,27 @@ class VisualTimer: UIView {
         layer.fillColor = UIColor.clear.cgColor
         layer.strokeColor = color
         layer.lineWidth = CGFloat(trackWidth)
-//        layer.strokeEnd = 0.0
+        layer.strokeEnd = 0.0
         
         layer.setNeedsDisplay()
     }
     
-    func animateCircle(duration: Double, layer: CAShapeLayer) {
+    func animateCircle(duration: Double, beginTime: Double, layer: CAShapeLayer, callback: (() -> Void)?) {
+        CATransaction.begin()
+
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = duration
         animation.fromValue = 0.0
         animation.toValue = 1.0
         animation.timingFunction = CAMediaTimingFunction(name: "linear")
+        animation.beginTime = beginTime
+        animation.fillMode = kCAFillModeBackwards
         
         layer.strokeEnd = 1.0
+        
         layer.add(animation, forKey: "animateCircle")
+        
+        CATransaction.commit()
     }
     
     func positionForValue(value: Double) -> CGPoint {
