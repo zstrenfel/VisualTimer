@@ -18,7 +18,9 @@ struct ExampleTimer {
 
 class ViewController: UIViewController {
     
-    let visualTimer = VisualTimer(frame: CGRect.zero)
+   
+    @IBOutlet weak var visualTimer: VisualTimer!
+    
     let exampleTimer = ExampleTimer(countdown: 2.0, primary: 10.0, cooldown: 2.0, interval: 2.0, intervalRepeat: true)
 
     override func viewDidLoad() {
