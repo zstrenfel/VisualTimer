@@ -30,11 +30,10 @@ class VisualTimer: UIView {
     let intervalRepeat: Bool = true
     
     //Visual Design Variables
-    var inset: CGFloat = 8.0
+    var inset: CGFloat = 40.0
     var trackWidth: Double = 10.0
     var trackColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0).cgColor
     var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
-    var timerRadius: Double = 100.0
     var timerSpeed: Double = 0.5
     
     //CoreGraphics Layers
@@ -53,6 +52,7 @@ class VisualTimer: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         layer.addSublayer(countdownLayer)
         layer.addSublayer(primaryLayer)
         layer.addSublayer(cooldownLayer)
@@ -84,9 +84,10 @@ class VisualTimer: UIView {
     }
     
     func updateLayerFrames() {
-        drawTrack(startAngle: 0.0, endAngle:  CGFloat(valueToRadians(countdown)), color: UIColor.red.cgColor, layer: countdownLayer)
+        drawTrack(startAngle: CGFloat(valueToRadians(0.0)), endAngle:  CGFloat(valueToRadians(countdown)), color: UIColor.red.cgColor, layer: countdownLayer)
         drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), color: UIColor.blue.cgColor, layer: primaryLayer)
         drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), color: UIColor.green.cgColor, layer: cooldownLayer)
+        
         drawIndicator(position: positionForValue(value: countdown), color: UIColor.yellow.cgColor, layer: countdownIndicator)
         drawIndicator(position: positionForValue(value: primary + countdown), color: UIColor.magenta.cgColor, layer: primaryIndicator)
         
@@ -155,12 +156,6 @@ class VisualTimer: UIView {
         }
     }
     
-    func drawInterval(position: CGPoint?, color: CGColor, layer: CAShapeLayer) {
-        if let pos = position {
-            
-        }
-    }
-    
     func positionForValue(value: Double) -> CGPoint? {
         guard value > 0.0 else {
             return nil
@@ -176,7 +171,9 @@ class VisualTimer: UIView {
     
     //Converts a value to it's corresponding radian value as compared to total time
     func valueToRadians(_ value: Double) -> Double {
-        return (2 * M_PI) * (value / time)
+        let angle = (2 * M_PI) * (value / time)
+        let translatedAngle = angle + M_PI_2
+        return translatedAngle
     }
     
 
