@@ -21,11 +21,13 @@ class VisualTimer: UIView {
     
     //Time Variables
     var paused: Bool = true
-    var interval: Double? = nil
-    var countdown: Double = 0.0
+    var countdown: Double = 5.0
     var primary: Double = 10.0
     var cooldown: Double = 5.0
-    var time: Double = 15.0
+    var time: Double = 20.0
+    
+    var interval: Double? = 2.0
+    let intervalRepeat: Bool = true
     
     //Visual Design Variables
     var inset: CGFloat = 8.0
@@ -37,25 +39,42 @@ class VisualTimer: UIView {
     
     //CoreGraphics Layers
     let countdownLayer = CAShapeLayer()
+    let countdownIndicator = CAShapeLayer()
+    
     let primaryLayer = CAShapeLayer()
+    let primaryIndicator = CAShapeLayer()
+    
     let cooldownLayer = CAShapeLayer()
     
+    
     let indicatorLayer = CALayer()
-    var indicatorLayerRadius: CGFloat = 10.0
-    let intervalLayers: [CALayer] = []
-    var intervalLayerWidth: CGFloat = 10.0
+    var indicatorRadius: CGFloat = 5.0
+    var intervalLayers: [CAShapeLayer] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        countdownLayer.backgroundColor = trackColor
         layer.addSublayer(countdownLayer)
-        
         layer.addSublayer(primaryLayer)
         layer.addSublayer(cooldownLayer)
         
-        indicatorLayer.backgroundColor = indicatorColor
-        layer.addSublayer(indicatorLayer)
+        layer.addSublayer(countdownIndicator)
+        layer.addSublayer(primaryIndicator)
+        
+        
+        if interval != nil {
+            if !intervalRepeat {
+                let intervalLayer = CAShapeLayer()
+                intervalLayers.append(intervalLayer)
+                layer.addSublayer(intervalLayer)
+            } else {
+                let intervalCount = Int(floor(primary/interval!))
+                for _ in 0..<intervalCount {
+                    let intervalLayer = CAShapeLayer()
+                    intervalLayers.append(intervalLayer)
+                    layer.addSublayer(intervalLayer)
+                }
+            }
+        }
         
         updateLayerFrames()
     }
@@ -68,7 +87,19 @@ class VisualTimer: UIView {
         drawTrack(startAngle: 0.0, endAngle:  CGFloat(valueToRadians(countdown)), color: UIColor.red.cgColor, layer: countdownLayer)
         drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), color: UIColor.blue.cgColor, layer: primaryLayer)
         drawTrack(startAngle: CGFloat(valueToRadians(primary + countdown)), endAngle:  CGFloat(valueToRadians(time)), color: UIColor.green.cgColor, layer: cooldownLayer)
-        animateCircle(duration: countdown, beginTime: CACurrentMediaTime() + 0.0, layer: countdownLayer, callback: nil)
+        drawIndicator(position: positionForValue(value: countdown), color: UIColor.yellow.cgColor, layer: countdownIndicator)
+        drawIndicator(position: positionForValue(value: primary + countdown), color: UIColor.magenta.cgColor, layer: primaryIndicator)
+        
+        if interval != nil {
+            for i in 0..<intervalLayers.count {
+                let intervalVal = interval! * Double(i + 1)
+                if intervalVal != primary {
+                    drawIndicator(position: positionForValue(value: intervalVal + countdown), color: UIColor.brown.cgColor, layer: intervalLayers[i])
+                }
+            }
+        }
+        
+        animateCircle(duration: countdown, beginTime: CACurrentMediaTime(), layer: countdownLayer, callback: nil)
         animateCircle(duration: primary, beginTime:  CACurrentMediaTime() + countdown, layer: primaryLayer, callback: nil)
         animateCircle(duration: cooldown, beginTime:  CACurrentMediaTime() + primary + countdown, layer: cooldownLayer, callback: nil)
     }
@@ -109,7 +140,26 @@ class VisualTimer: UIView {
         CATransaction.commit()
     }
     
-    func positionForValue(value: Double) -> CGPoint {
+    func drawIndicator(position: CGPoint?, color: CGColor, layer: CAShapeLayer) {
+        if let pos = position {
+            let indicator = UIBezierPath(
+                arcCenter: CGPoint(x: pos.x, y: pos.y),
+                radius: CGFloat(indicatorRadius),
+                startAngle: 0,
+                endAngle: CGFloat(2 * M_PI),
+                clockwise: true)
+            layer.path = indicator.cgPath
+            
+            layer.fillColor = color
+            layer.setNeedsDisplay()
+        }
+    }
+    
+    func positionForValue(value: Double) -> CGPoint? {
+        guard value > 0.0 else {
+            return nil
+        }
+        
         let r = valueToRadians(value)
         let radius = Double(bounds.size.width/2 - inset)
         let xCord = radius * cos(r) + Double(bounds.size.width/2)
