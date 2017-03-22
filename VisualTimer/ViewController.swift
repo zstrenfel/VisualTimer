@@ -28,14 +28,6 @@ class ViewController: UIViewController {
         visualTimer.timer = exampleTimer
         view.addSubview(visualTimer)
     }
-    
-    override func viewDidLayoutSubviews() {
-        let margin: CGFloat = 20.0
-        let width = view.bounds.width - 2.0 * margin
-        visualTimer.frame = CGRect(x: margin, y: margin + topLayoutGuide.length,
-                                   width: width, height: width)
-    }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

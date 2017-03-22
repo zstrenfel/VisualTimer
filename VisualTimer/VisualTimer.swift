@@ -67,15 +67,6 @@ class VisualTimer: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.addSublayer(baseTrackLayer)
-        
-        layer.addSublayer(countdownLayer)
-        layer.addSublayer(primaryLayer)
-        layer.addSublayer(cooldownLayer)
-        
-        layer.addSublayer(startIndicator)
-        layer.addSublayer(countdownIndicator)
-        layer.addSublayer(primaryIndicator)
     }
     
     required init?(coder: NSCoder) {
@@ -107,7 +98,6 @@ class VisualTimer: UIView {
         for _ in 0..<intervalCount {
             let intervalLayer = CAShapeLayer()
             intervalLayers.append(intervalLayer)
-            layer.addSublayer(intervalLayer)
         }
     }
     
@@ -148,6 +138,7 @@ class VisualTimer: UIView {
         layer.strokeEnd = visible ? 1.0 : 0.0
         layer.lineCap = kCALineCapRound
         
+        self.layer.addSublayer(layer)
         layer.setNeedsDisplay()
     }
     
@@ -172,6 +163,7 @@ class VisualTimer: UIView {
             layer.lineWidth = 2.0
             layer.lineCap = kCALineCapRound
             
+            self.layer.addSublayer(layer)
             layer.setNeedsDisplay()
         }
     }
@@ -185,8 +177,9 @@ class VisualTimer: UIView {
                 endAngle: CGFloat(2 * M_PI),
                 clockwise: true)
             layer.path = indicator.cgPath
-            
             layer.fillColor = color
+            
+            self.layer.addSublayer(layer)
             layer.setNeedsDisplay()
         }
     }
