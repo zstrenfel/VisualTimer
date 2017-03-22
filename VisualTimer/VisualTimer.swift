@@ -13,7 +13,6 @@ import QuartzCore
 class VisualTimer: UIView {
 
 //    weak var delegate: VisualTimerDelegate? = nil
-    var currLocation: CGPoint = CGPoint()
     
     //Time Variables
     var timer: ExampleTimer? = nil {
@@ -77,7 +76,6 @@ class VisualTimer: UIView {
         super.draw(rect)
         updateLayerFrames()
     }
-    
     
     func updateTimer(with timer: ExampleTimer) {
         self.countdown = timer.countdown
