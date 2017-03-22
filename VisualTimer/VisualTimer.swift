@@ -35,7 +35,6 @@ class VisualTimer: UIView {
     var trackWidth: Double = 10.0
     var trackColor: CGColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0).cgColor
     var indicatorColor: CGColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0).cgColor
-    var timerSpeed: Double = 0.5
     var degreeOfRotation: Double = M_PI_2
     
     //CoreGraphics Layers
@@ -48,7 +47,6 @@ class VisualTimer: UIView {
     let primaryIndicator = CAShapeLayer()
     
     let cooldownLayer = CAShapeLayer()
-    
     
     let indicatorLayer = CALayer()
     var indicatorRadius: CGFloat = 5.0
@@ -66,19 +64,12 @@ class VisualTimer: UIView {
         layer.addSublayer(countdownIndicator)
         layer.addSublayer(primaryIndicator)
         
-        
         if interval != nil {
-            if !intervalRepeat {
+            let intervalCount = !intervalRepeat ? 1 : Int(floor(primary/interval!))
+            for _ in 0..<intervalCount {
                 let intervalLayer = CAShapeLayer()
                 intervalLayers.append(intervalLayer)
                 layer.addSublayer(intervalLayer)
-            } else {
-                let intervalCount = Int(floor(primary/interval!))
-                for _ in 0..<intervalCount {
-                    let intervalLayer = CAShapeLayer()
-                    intervalLayers.append(intervalLayer)
-                    layer.addSublayer(intervalLayer)
-                }
             }
         }
         
@@ -102,7 +93,7 @@ class VisualTimer: UIView {
             for i in 0..<intervalLayers.count {
                 let intervalVal = interval! * Double(i + 1)
                 if intervalVal != primary {
-                    drawInterval(midpoint: positionForValue(value: intervalVal + countdown), value: intervalVal + countdown, color: UIColor.black.cgColor, layer: intervalLayers[i])
+                    drawInterval(midpoint: positionForValue(value: intervalVal + countdown), value: intervalVal + countdown, color: UIColor.darkGray.cgColor, layer: intervalLayers[i])
                 }
             }
         }
@@ -120,22 +111,21 @@ class VisualTimer: UIView {
     
     func pauseAnimation() {
         paused = true
-        var pausedTime = CACurrentMediaTime() - countdownLayer.beginTime
+        let pausedTime = CACurrentMediaTime() - countdownLayer.beginTime
+
         countdownLayer.speed = 0.0
         countdownLayer.timeOffset = pausedTime
         
-        pausedTime = CACurrentMediaTime() - primaryLayer.beginTime
         primaryLayer.speed = 0.0
         primaryLayer.timeOffset = pausedTime
         
-        pausedTime = CACurrentMediaTime() - cooldownLayer.beginTime
         cooldownLayer.speed = 0.0
         cooldownLayer.timeOffset = pausedTime
     }
     
     func resumeAnimation() {
         paused = false
-        var pausedTime = countdownLayer.timeOffset
+        let pausedTime = countdownLayer.timeOffset
         var timeSincePaused: CFTimeInterval
         
         countdownLayer.speed = 1.0
@@ -144,18 +134,14 @@ class VisualTimer: UIView {
         timeSincePaused = countdownLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         countdownLayer.beginTime = timeSincePaused
         
-        pausedTime = primaryLayer.timeOffset
         primaryLayer.speed = 1.0
         primaryLayer.timeOffset = 0.0
         primaryLayer.beginTime = 0.0
-        timeSincePaused = primaryLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         primaryLayer.beginTime = timeSincePaused
         
-        pausedTime = cooldownLayer.timeOffset
         cooldownLayer.speed = 1.0
         cooldownLayer.timeOffset = 0.0
         cooldownLayer.beginTime = 0.0
-        timeSincePaused = cooldownLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         cooldownLayer.beginTime = timeSincePaused
     }
     
@@ -163,16 +149,15 @@ class VisualTimer: UIView {
         started = false
         paused = false
         
-        countdownLayer.removeAllAnimations()
-        primaryLayer.removeAllAnimations()
-        cooldownLayer.removeAllAnimations()
-        
-        countdownLayer.speed = 1.0
-        countdownLayer.timeOffset = 0.0
-        primaryLayer.speed = 1.0
-        primaryLayer.timeOffset = 0.0
-        cooldownLayer.speed = 1.0
-        cooldownLayer.timeOffset = 0.0
+        clearLayerAnimation(layer: countdownLayer)
+        clearLayerAnimation(layer: primaryLayer)
+        clearLayerAnimation(layer: cooldownLayer)
+    }
+    
+    func clearLayerAnimation(layer: CAShapeLayer) {
+        layer.removeAllAnimations()
+        layer.speed = 1.0
+        layer.timeOffset = 0.0
     }
     
     func animateCircle(duration: Double, beginTime: Double, layer: CAShapeLayer, callback: (() -> Void)?) {
@@ -207,8 +192,6 @@ class VisualTimer: UIView {
         
         layer.setNeedsDisplay()
     }
-    
-
     
     func drawInterval(midpoint: CGPoint?, value: Double, color: CGColor, layer: CAShapeLayer) {
         if let mid = midpoint {
@@ -251,7 +234,6 @@ class VisualTimer: UIView {
     }
     
     // MARK: - Utilities
-    
     func positionForValue(value: Double) -> CGPoint? {
         let r = valueToRadians(value)
         let radius = Double(bounds.size.width/2 - inset)
