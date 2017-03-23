@@ -38,6 +38,8 @@ class VisualTimer: UIView {
     @IBInspectable var primaryTrackColor: UIColor = UIColor.darkGray
     @IBInspectable var secondaryTrackColor: UIColor = UIColor.lightGray
     @IBInspectable var indicatorColor: UIColor = UIColor(red: 82/255, green: 179/255, blue: 217/255, alpha: 1.0)
+    @IBInspectable var timerFontColor: UIColor = .darkGray
+    @IBInspectable var descriptionFontColor: UIColor = .gray
     
     
     var inset: CGFloat = 8.0
@@ -84,14 +86,6 @@ class VisualTimer: UIView {
         self.interval = timer.interval
         self.intervalRepeat = timer.intervalRepeat
         self.time = countdown + primary + cooldown
-
-        timeLabel.frame = CGRect(x: bounds.width - 50, y: bounds.height/2, width: bounds.width - 100, height: 50)
-        timeLabel.center = CGPoint(x: bounds.width/2, y: bounds.height/2)
-        timeLabel.textAlignment = .center
-        timeLabel.backgroundColor = .red
-        timeLabel.font = timeLabel.font.withSize(36.0)
-        timeLabel.text = "00:00:00"
-        self.addSubview(timeLabel)
         
         if interval != nil && interval! > 0.0 {
             createIntervalLayers()
@@ -107,6 +101,8 @@ class VisualTimer: UIView {
     }
     
     func updateLayerFrames() {
+        createLabels()
+        
         drawTrack(startAngle: 0.0, endAngle: CGFloat(2 * M_PI), width: trackWidth + 5.0, visible: true, color: baseTrackColor.cgColor, layer: baseTrackLayer)
         drawTrack(startAngle: CGFloat(valueToRadians(0.0)), endAngle:  CGFloat(valueToRadians(countdown)), width: trackWidth, color: secondaryTrackColor.cgColor, layer: countdownLayer)
         drawTrack(startAngle: CGFloat(valueToRadians(countdown)), endAngle:  CGFloat(valueToRadians(primary + countdown)), width: trackWidth, color: primaryTrackColor.cgColor, layer: primaryLayer)
@@ -124,6 +120,28 @@ class VisualTimer: UIView {
                 }
             }
         }
+    }
+    
+    func createLabels() {
+        timeLabel.frame = CGRect(x: 0, y: 0, width: bounds.width - 140, height: 50)
+        timeLabel.center = CGPoint(x: bounds.width/2, y: bounds.height/2 - 16)
+        timeLabel.textAlignment = .center
+        timeLabel.font = timeLabel.font.withSize(56.0)
+        timeLabel.adjustsFontSizeToFitWidth = true
+        timeLabel.minimumScaleFactor = 0.4
+        timeLabel.text = "00:00:00"
+        timeLabel.textColor = timerFontColor
+        self.addSubview(timeLabel)
+        
+        descriptionLabel.frame = CGRect(x: 0, y: 0, width: bounds.width - 140, height: 25)
+        descriptionLabel.center = CGPoint(x: bounds.width/2, y: (bounds.height/2) + (timeLabel.frame.height - 32))
+        descriptionLabel.textAlignment = .center
+        descriptionLabel.font = timeLabel.font.withSize(18)
+        descriptionLabel.textColor = descriptionFontColor
+        descriptionLabel.adjustsFontSizeToFitWidth = true
+        descriptionLabel.minimumScaleFactor = 0.5
+        descriptionLabel.text = "Meditation"
+        self.addSubview(descriptionLabel)
     }
     
     // MARK: - Drawing Functions

@@ -39,11 +39,11 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0W-YC-cgU" customClass="VisualTimer" customModule="VisualTimer" customModuleProvider="target">
-                                <rect key="frame" x="37" y="36" width="300" height="300"/>
+                                <rect key="frame" x="62" y="144" width="250" height="250"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="DWb-vS-5k8"/>
-                                    <constraint firstAttribute="width" constant="300" id="aVw-pJ-x8H"/>
+                                    <constraint firstAttribute="height" constant="250" id="DWb-vS-5k8"/>
+                                    <constraint firstAttribute="width" constant="250" id="aVw-pJ-x8H"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="indicatorColor">
@@ -60,7 +60,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Z8k-ke-6Gv" secondAttribute="trailing" id="WyP-Co-0i2"/>
                             <constraint firstItem="a0W-YC-cgU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bSj-En-lhK"/>
                             <constraint firstItem="Z8k-ke-6Gv" firstAttribute="top" secondItem="kXf-jG-4Yq" secondAttribute="bottom" constant="8" id="fPV-eF-kRJ"/>
-                            <constraint firstItem="a0W-YC-cgU" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="16" id="oHt-Mb-cXI"/>
+                            <constraint firstItem="a0W-YC-cgU" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="124" id="oHt-Mb-cXI"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Z8k-ke-6Gv" secondAttribute="bottom" constant="16" id="tQD-k4-RWb"/>
                         </constraints>
                     </view>
